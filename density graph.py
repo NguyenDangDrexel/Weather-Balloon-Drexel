@@ -1,4 +1,3 @@
-# density3 (): fail, density 1,2: OK 
 import matplotlib.pyplot as plt 
 import math 
 def creating_data (points,data_range): # input: points, range of data  => output: list of data points 
@@ -84,7 +83,7 @@ for i in range (points):
     data_density2.append (density2 (P_i = P2,M = M,g0 = g0,T2 = T2,R= R,height = data2[i]))
     data_density3.append (density3 (P_i = P3, a3 = a3,b3= b3,T2= T2,M=M,g0=g0,R =R,height = data3[i]))
 plt.plot (data1+data2+data3,data_density1+data_density2+data_density3)
-print ()
+
 #labelling + showing the graph
 plt.title ('Derived function vs NASA curve-fitting function')
 plt.xlabel ('Altitude (m)')
