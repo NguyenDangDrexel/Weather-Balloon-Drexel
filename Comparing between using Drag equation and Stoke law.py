@@ -1,30 +1,44 @@
 # This program comparing the difference between using Stoke law and Drag equation to calculate the drag force for the balloon 
 # Given the following values: V_0 = 1.5 m^3; rho_0 = 1.225 kg/m^3; rho_He - 0.1785 kg/m^3
 # Result: we can't use Stoke's Law as this function would result in a completely wrong result 
-
+# In This program, we I try use the function to calculate Cd (Re) and Re(x,x'), but the model fails. => Solutions: use constant value for drag coefficient/ find a simpler equation
+# Update: 30/3/2024 1:35am. Run successfully with no change in code 
 import numpy as np
 from scipy.integrate import odeint 
 import matplotlib.pyplot as plt 
 import math 
+from Model import * 
 
 
 initial_conditions = [0,0] 
 time_points = np.linspace (0,65,100000)
-time_points2 = np.linspace (0,1000,100000)
+time_points2 = np.linspace (0,6000,1000)
 # defining the function 
 # IMPORTANT: the form of the function matter. we need to put the highest order on left side, and the rest on the right side 
 # Volume increase with altitude 
+
+#defining function for Reynold number
+def Re (x,xdot):
+    Re = (density1(x) * xdot * 2 * Radius1(x)) / vis1(x)
+    return Re 
+
+def Cd (x,xdot) :
+    #Fail when calculate Cd(Re)
+    Cd = 24 / Re (x,xdot) + (2.6 * (Re (x,xdot)/5)) / (1 + (Re (x,xdot)/5)** (1.52)) + (0.411 * (Re (x,xdot)/2.63 * 10 ** (5))** (-7.94))/(1 + (Re (x,xdot)/(2.63 * 10 ** 5))**(-8)) + ((0.25 * Re (x,xdot) / 10**6)/(1 + Re (x,xdot)* 10**6)) - 0.04
+   # Cd = 0.12
+    return Cd 
+    
+
 def function (y,t): 
     x,x_dot = y   
-    x_ddot = 5.4 - 6.36*10**(-6) * (288.04-0.00649*x)** (0.08)*(394.44 - 0.00649*x)*x_dot  
+    x_ddot = 5.4 - 6 * np.pi * vis1(x) * Radius1(x) * x_dot
     return x_dot, x_ddot 
-def volume (h): 
-    V  =  ((288.04-0.00649*h)/(288.04)) ** (4.256) 
-    return V 
+
 # Using drag equation 
 def function2 (y,t):
     x,xdot = y
-    xddot = 5.4 - 0.2572  * xdot**(2) * volume(x)
+    xddot = 5.4 - 1/2 *density1(x) * xdot**2 * np.pi * Radius1(x)**2 
+    #xddot =  1 - 1/2 * 0.3 * xdot**2*density1(x)*Radius1(x)**2
     return xdot,xddot 
 
 solution = odeint (function, y0= [0,0], t = time_points) 
@@ -52,13 +66,13 @@ axes[0,0].set_yticks(range(0,11001,1000))  # Customize y-axis ticks
 axes[1,0].plot(time_points, x_dot_sol, color='red')
 axes[1,0].set_title('Using Stoke law') 
 axes[1,0].set_xlabel ('t(s)')
-axes[1,0].set_ylabel ('v(m/s)')
+axes[1,0].set_ylabel ('h(m)')
 axes[1,0].grid(True)  
 # third plot 
 axes[0,1].plot(time_points2, x_sol2, color='blue')
 axes[0,1].set_title('Using drag equation') 
 axes[0,1].set_xlabel ('t(s)')
-axes[0,1].set_ylabel ('v(m/s)')
+axes[0,1].set_ylabel ('h(m/s)')
 axes[0,1].grid(True)  
 # fourth plot 
 axes[1,1].plot(time_points2, x_dot_sol2, color='blue')
