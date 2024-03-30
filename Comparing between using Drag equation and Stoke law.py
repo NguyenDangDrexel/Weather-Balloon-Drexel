@@ -16,13 +16,15 @@ time_points2 = np.linspace (0,1000,100000)
 # Volume increase with altitude 
 def function (y,t): 
     x,x_dot = y   
-    x_ddot = 5.4 - 6.36*10**(-6) * (288.04-0.00649*x)** (0.08)*(394.44 - 0.00649*x)*x_dot 
+    x_ddot = 5.4 - 6.36*10**(-6) * (288.04-0.00649*x)** (0.08)*(394.44 - 0.00649*x)*x_dot  
     return x_dot, x_ddot 
-
+def volume (h): 
+    V  =  ((288.04-0.00649*h)/(288.04)) ** (4.256) 
+    return V 
 # Using drag equation 
 def function2 (y,t):
     x,xdot = y
-    xddot = 5.4 - 0.2572  * xdot**(2) * ((288.04-0.00649*x)/(288.04)) ** (4.256)
+    xddot = 5.4 - 0.2572  * xdot**(2) * volume(x)
     return xdot,xddot 
 
 solution = odeint (function, y0= [0,0], t = time_points) 
