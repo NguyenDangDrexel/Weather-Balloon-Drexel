@@ -8,7 +8,7 @@ pressure = np.concatenate((derived_pressure1(np.linspace(0,11000,100)), derived_
 
 plt.plot (data,pressure)
 
-plt.title ('Derived function vs NASA curve-fitting function')
+plt.title ('Pressure vs altitude')
 plt.xlabel ('Altitude (m)')
 plt.ylabel ('Pressure kg/m^3')
 plt.legend ()
