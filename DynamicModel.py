@@ -41,15 +41,15 @@ fig, axes = plt.subplots(2, 2, figsize=(8, 6))
 # labeling the whole graoh 
 fig.suptitle ('Analytical solution and odeint ()')
 
-# third plot 
+# first plot 
 axes[0,0].plot(time_points2, x_sol2, color='blue')
-axes[0,0].set_title('Altitude') 
+axes[0,0].set_title('Altitude - odeint ') 
 axes[0,0].set_xlabel ('t(s)')
 axes[0,0].set_ylabel ('h(m/s)')
 axes[0,0].grid(True)  
-# fourth plot 
+# second plot 
 axes[0,1].plot(time_points2, x_dot_sol2, color='blue')
-axes[0,1].set_title('Velocity') 
+axes[0,1].set_title('Velocity - odeint ') 
 axes[0,1].set_xlabel ('t(s)')
 axes[0,1].set_ylabel ('v(m/s)')
 axes[0,1].grid(True)  
@@ -77,13 +77,13 @@ print (x(1))
 
 
 axes[1,0].plot(time, altitude_data, color='blue')
-axes[1,0].set_title('Velocity') 
+axes[1,0].set_title('Altitude - analytical') 
 axes[1,0].set_xlabel ('t(s)')
-axes[1,0].set_ylabel ('v(m/s)')
+axes[1,0].set_ylabel ('h(m)')
 axes[1,0].grid(True) 
 
 axes[1,1].plot(time, velocity_data, color='blue')
-axes[1,1].set_title('Velocity') 
+axes[1,1].set_title('Velocity - analytical ') 
 axes[1,1].set_xlabel ('t(s)')
 axes[1,1].set_ylabel ('v(m/s)')
 axes[1,1].grid(True) 
