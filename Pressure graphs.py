@@ -2,11 +2,22 @@ import matplotlib.pyplot as plt
 import numpy as np 
 from Model import *
 
-data = np.concatenate((np.linspace(0,11000,100), np.linspace(11000,25000,100), np.linspace(25000,35000,100)))
 
-pressure = np.concatenate((derived_pressure1(np.linspace(0,11000,100)), derived_pressure2(np.linspace(11000,25000,100)), derived_pressure3(np.linspace(25000,35000,100))))
+#This program will plot the graph of pressure in the range : H1 <= h <=  H2
 
-plt.plot (data,pressure)
+H1 = 0 
+H2 = 1000
+# data_points that you want to make
+data_points = 1000
+
+
+pressure_data = []
+
+data = np.linspace (H1,H2,data_points)
+
+for i in range (data_points):
+    pressure_data.append(Pressure(data[i]))
+plt.plot (data,pressure_data)
 
 plt.title ('Pressure vs altitude')
 plt.xlabel ('Altitude (m)')
