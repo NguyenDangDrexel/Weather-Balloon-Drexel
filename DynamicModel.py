@@ -1,6 +1,6 @@
 """
 This program solving the dynamic equation by using odeint (). In this program, the following assumptions are made: 
-1. Drag coefficient is constant 
+1. Drag coefficient is constant; Cd = 0.3. We will need different analytical solution if we change Cd 
 2. Density, Radius change with altitdue 
 3. Density of atmosphere and Helium = 1.293 and 0.166 (kg/m^3), respectively 
 4. Total mass of balloon: 1 (kg)
