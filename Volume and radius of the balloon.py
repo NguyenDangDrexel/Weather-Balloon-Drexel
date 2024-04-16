@@ -2,16 +2,26 @@
 import matplotlib.pyplot as plt 
 import numpy as np 
 from Model import *
-data = np.concatenate((np.linspace(0,11000,100), np.linspace(11000,25000,100), np.linspace(25000,35000,100)))
+#This program will plot the graph of dynamic viscosity in the range : H1 <= h <=  H2
 
-volume = np.concatenate((Volume1(np.linspace(0,11000,100)), Volume2(np.linspace(11000,25000,100)), Volume3(np.linspace(25000,35000,100))))
-radius = np.concatenate((Radius1(np.linspace(0,11000,100)), Radius2(np.linspace(11000,25000,100)), Radius3(np.linspace(25000,35000,100))))
+H1 = 0 
+H2 = 35000
+# data_points that you want to make
+data_points = 1000
+# list of data to draw a plot 
+volume_isothermal_data = []
+radius_isothermal_data= [] 
+data = np.linspace (H1,H2,data_points)
+
+for i in range (data_points):
+    volume_isothermal_data.append(Volume_isothermal(data[i]))
+    radius_isothermal_data.append (Radius_isothermal (data[i]))
 
 fig,axes = plt.subplots (2,1)
-axes[0].plot (data,volume )
+axes[0].plot (data,volume_isothermal_data )
 axes[0].set_title ('Volume')
 axes[0].grid (True)
-axes[1].plot (data,radius)
+axes[1].plot (data,radius_isothermal_data)
 axes[1].set_title ('Radius')
 axes[1].grid (True)
 
