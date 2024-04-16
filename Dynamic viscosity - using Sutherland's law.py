@@ -2,19 +2,31 @@
 import matplotlib.pyplot as plt 
 import numpy as np 
 from Model import *
-data = np.concatenate((np.linspace(0,11000,100), np.linspace(11000,25000,100), np.linspace(25000,35000,100)))
+#This program will plot the graph of dynamic viscosity in the range : H1 <= h <=  H2
 
-Viscosity = np.concatenate((vis1(np.linspace(0,11000,100)), vis2(np.linspace(11000,25000,100)), vis3(np.linspace(25000,35000,100))))
-
-fig,axes = plt.subplots (1,1)
-axes[0].plot (data,Viscosity )
-axes[0].set_title ('Viscosity')
-axes[0].set_xlabel ('Altitude(m)')
-axes[0].set_ylabel ('Viscosity')
-
-axes[0].grid (True)
+H1 = 0 
+H2 = 35000
+# data_points that you want to make
+data_points = 1000
 
 
-plt.tight_layout
+viscosity_data = []
+
+data = np.linspace (H1,H2,data_points)
+
+for i in range (data_points):
+    viscosity_data.append(Viscosity(data[i]))
+
+
+
+
+plt.plot (data,viscosity_data )
+plt.title ('Viscosity')
+plt.xlabel ('Altitude(m)')
+plt.ylabel ('Viscosity')
+
+plt.grid (True)
+
+
 plt.legend ()
 plt.show () 
