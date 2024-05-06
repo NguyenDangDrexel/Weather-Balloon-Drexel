@@ -10,7 +10,8 @@ g0 = 9.80665 #(m/s^2)
 R = 8314.13# ( J/mol*K) universal constant 
 M = 28.6944  # (g/mol) - molar mass of dried gas 
 mu_0 = 1.77 * 10 ** (-5) # Dynamic density (Pa-s)
-
+#constant of adiabatic process 
+gamma = 1.4 
 # from  0 <= h <= 11000:  T = a1 +b1h 
 a1 = 288.04 # Kelvin 
 b1 = -0.00649 # (1/m)
@@ -57,17 +58,49 @@ def Density (h):
 def Viscosity (h,mu_0 = mu_0,T0=a1): 
     v = mu_0 * ((Temperature(h))/(T0)) ** (1.5) * ((Temperature(h)+110.4)/(T0 + 110.4))
     return v 
-#Defining the function for the volume of the balloon, assuming that temperature inside always = temperature outside; delta pressure = - 
-def Volume_isothermal (h,P0= P0, V0=1,T0=a1):
-    V = ((P0*V0)/(T0)) * ((Temperature(h))/(Pressure(h)))
-    return V 
 
-def Volume_isolated (h,P0= P0, V0=1,T0=a1): 
-    V = ((P0*V0)/(T0)) * (T0)/(Pressure(h))
+#Input: the initial value of volume 
+def Volume_constant (V0): 
+    V = V0 
     return V 
-
+#Input: the volume of the balloon 
+def Area_constant (V0):
+    A =np.pi * ((3/4) * (Volume_constant(V0)/np.pi))**(2/3)
+    return A 
+def Radius_constant (V0):
+    R = (3/4 * Volume_constant (V0) / np.pi) ** (1/3)
+    return R 
 # Radius function calculated from the Volume equation 
+#Isothermal model (T_in = constant), Input: heigh, initial volume
+def Volume_isothermal (h,P0= P0, V0=1,T0=a1):
+    V = V0 * ((P0)/(Pressure(h)))
+    return V 
 def Radius_isothermal (h,V0 = 1): 
     R = Volume_isothermal(h,V0=1) ** (1/3)
     return R 
+def Area_isothermal (h,V0):
+    A =np.pi * ((3/4) * (Volume_isothermal(h,V0 =V0)/np.pi))**(2/3)
+    return A 
+def Volume_adiabatic (h,P0=P0,V0=1):
+    V = (P0/Pressure(h)) ** (1/gamma)* V0
+    return V 
+def Area_adiabatic (h,V0):
+    A =np.pi * ((3/4) * (Volume_adiabatic(h,V0 =V0)/np.pi))**(2/3)
+    return A 
+def Radius_adiabatic (h,V0 = 1): 
+    R = Volume_adiabatic(h,V0=1) ** (1/3)
+    return R 
+# this equation is taken from Henrique Yago paper 
+def Volume_data (h, rf,constant, ri =Radius_constant(V0=1)):
+    V = 4/3 * np.pi * (constant + (ri - rf)/(Pressure(0) - Pressure(25000)) * Pressure(h)) ** (3)
+    return V 
 
+def Volume_out (h,P0=P0,V0=1,T0=a1):
+    V = V0 * ( (P0)/(Pressure(h)) ) * ( (Temperature(h))/(T0) )
+    return V 
+def Area_out (h,V0):
+    A =np.pi * ((3/4) * (Volume_out(h,V0 =V0)/np.pi))**(2/3)
+    return A 
+def Radius_out (h,V0 = 1): 
+    R = Volume_out (h,V0=1) ** (1/3)
+    return R 
